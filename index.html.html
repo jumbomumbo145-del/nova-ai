@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#11111a">
+<title>Nova — Personal AI</title>
+<style>
+:root{color-scheme:dark;--bg:#101018;--panel:#191925;--panel2:#222235;--line:#303047;--text:#f5f3ff;--muted:#aaa7bf;--purple:#9877ff;--purple2:#7252e8}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#302453 0%,var(--bg) 52%);color:var(--text);font:16px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
+.app{max-width:760px;margin:auto;min-height:100vh;display:flex;flex-direction:column;padding:env(safe-area-inset-top) 16px env(safe-area-inset-bottom)}
+header{display:flex;align-items:center;gap:12px;padding:18px 2px;border-bottom:1px solid var(--line)}
+.logo{width:42px;height:42px;border-radius:15px;background:linear-gradient(145deg,#b49aff,#6948d9);display:grid;place-items:center;font-size:23px;box-shadow:0 5px 25px #8c65ff55}
+.brand{font-weight:750;font-size:20px;letter-spacing:.2px}.sub{font-size:12px;color:var(--muted);margin-top:2px}
+.status{margin-left:auto;border:1px solid #45405d;border-radius:99px;padding:6px 10px;color:#cbbcff;font-size:11px}
+main{flex:1;padding:26px 0 18px}.welcome{text-align:center;padding:34px 12px 25px}.orb{width:68px;height:68px;border-radius:24px;margin:0 auto 16px;background:linear-gradient(145deg,#b49aff,#6948d9);display:grid;place-items:center;font-size:32px;box-shadow:0 10px 35px #8c65ff44}
+h1{font-size:29px;margin:0 0 8px}.welcome p{color:var(--muted);line-height:1.5;margin:0 auto;max-width:420px;font-size:14px}
+.notice{background:#242033;border:1px solid #4b4168;color:#d6caff;padding:12px 14px;border-radius:14px;font-size:12px;line-height:1.5;margin:4px 0 18px}
+.quick{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}.tile{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px;text-align:left;color:var(--text);min-height:83px}.tile b{display:block;font-size:14px;margin:7px 0 3px}.tile span{font-size:12px;color:var(--muted)}.tile .ico{font-size:19px}
+.chat{display:flex;flex-direction:column;gap:12px;margin:14px 0}.bubble{max-width:88%;padding:12px 14px;border-radius:17px;line-height:1.45;font-size:14px;white-space:pre-wrap}.bot{background:var(--panel2);border:1px solid var(--line);align-self:flex-start}.user{background:#684bd0;align-self:flex-end}
+.composer{position:sticky;bottom:0;padding:12px 0 calc(12px + env(safe-area-inset-bottom));background:linear-gradient(transparent,var(--bg) 20%)}
+.inputwrap{display:flex;gap:8px;align-items:flex-end;background:var(--panel);border:1px solid #45405d;border-radius:20px;padding:9px}
+textarea{flex:1;resize:none;min-height:42px;max-height:120px;background:transparent;border:0;outline:0;color:var(--text);font:15px -apple-system,BlinkMacSystemFont,sans-serif;padding:10px 4px}
+button{border:0;cursor:pointer;color:white}.send{width:42px;height:42px;border-radius:14px;background:var(--purple2);font-size:18px}
+.tools{display:flex;gap:8px;margin-top:9px;flex-wrap:wrap}.tool{background:var(--panel);border:1px solid var(--line);border-radius:99px;padding:8px 11px;font-size:12px;color:#ded8f7}
+footer{text-align:center;color:#77748d;font-size:11px;padding:4px 0 14px}
+input[type=file]{display:none}.preview{display:none;margin:12px 0;border:1px solid var(--line);border-radius:14px;padding:10px;background:var(--panel)}.preview img{max-width:100%;max-height:220px;display:block;margin:auto;border-radius:10px}
+@media(min-width:600px){.app{padding-left:24px;padding-right:24px}.welcome{padding-top:55px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header><div class="logo">✦</div><div><div class="brand">Nova</div><div class="sub">Your personal AI workspace</div></div><div class="status">STARTER</div></header>
+<main>
+<section class="welcome"><div class="orb">✦</div><h1>Hey, I'm Nova.</h1><p>Your personal AI workspace. Ask questions, plan ideas, or bring in an image to work with.</p></section>
+<div class="notice"><b>Starter preview:</b> This is your website design. Chat and image upload preview work locally, but AI answers, image generation, editing, and live web search need an AI service connection. This page does not pretend those features are already connected.</div>
+<div class="quick">
+<button class="tile" onclick="setPrompt('Help me brainstorm an idea.')"><div class="ico">💬</div><b>Chat with Nova</b><span>Ask a question or brainstorm</span></button>
+<button class="tile" onclick="document.getElementById('imageInput').click()"><div class="ico">🖼️</div><b>Upload an image</b><span>Preview a photo to work with</span></button>
+<button class="tile" onclick="setPrompt('Help me write a detailed prompt for an image I want to create.')"><div class="ico">✨</div><b>Image ideas</b><span>Plan an image prompt</span></button>
+<button class="tile" onclick="setPrompt('Help me find reliable information about: ')"><div class="ico">🌐</div><b>Web research</b><span>Prepare a search question</span></button>
+</div>
+<div id="preview" class="preview"><div style="font-size:13px;margin-bottom:8px">Image selected <button onclick="clearImage()" style="float:right;background:none;color:#cbbcff">Remove</button></div><img id="previewImg" alt="Selected image preview"></div>
+<div id="chat" class="chat"><div class="bubble bot">Hi! I'm Nova's starter interface. I can help you prepare prompts and organize ideas here. To give me real AI abilities, we'll connect a model in the next setup step.</div></div>
+</main>
+<section class="composer">
+<div class="inputwrap"><textarea id="message" rows="1" placeholder="Message Nova..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage()}"></textarea><button class="send" onclick="sendMessage()" aria-label="Send">↑</button></div>
+<div class="tools"><button class="tool" onclick="document.getElementById('imageInput').click()">＋ Add image</button><button class="tool" onclick="setPrompt('Help me create an image prompt: ')">✦ Image prompt</button><button class="tool" onclick="setPrompt('Help me plan an edit to this image: ')">✎ Plan an edit</button></div>
+<input id="imageInput" type="file" accept="image/*" onchange="showImage(event)">
+</section>
+<footer>Nova starter • Private design prototype • AI services not connected yet</footer>
+</div>
+<script>
+function setPrompt(t){const el=document.getElementById('message');el.value=t;el.focus()}
+function sendMessage(){const el=document.getElementById('message');const t=el.value.trim();if(!t)return;addBubble(t,'user');el.value='';addBubble("This starter page isn't connected to an AI model yet, so I can't generate a real AI answer here. The next step is connecting a provider that supports chat and, separately, image tools.",'bot')}
+function addBubble(t,c){const b=document.createElement('div');b.className='bubble '+c;b.textContent=t;document.getElementById('chat').appendChild(b);b.scrollIntoView({behavior:'smooth',block:'nearest'})}
+function showImage(e){const f=e.target.files&&e.target.files[0];if(!f)return;const u=URL.createObjectURL(f);document.getElementById('previewImg').src=u;document.getElementById('preview').style.display='block'}
+function clearImage(){document.getElementById('preview').style.display='none';document.getElementById('imageInput').value=''}
+</script>
+</body></html>
